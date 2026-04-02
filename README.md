@@ -1,60 +1,27 @@
-import streamlit as st
-import yfinance as yf
-import pandas as pd
-import numpy as np
-from sklearn.linear_model import LinearRegression
+# Stock Predictor 📈
 
-st.set_page_config(page_title="Stock Predictor", layout="wide")
+## Description
+This project predicts stock prices using Machine Learning.
 
-st.title("📈 Stock Price Predictor")
+## Technologies Used
+- Python
+- Streamlit
+- Pandas
+- NumPy
+- Scikit-learn
+- yFinance
 
-# Input
-stock = st.text_input("Enter Stock Symbol", "AAPL")
+## How to Run
+1. Install dependencies:
+   pip install -r requirements.txt
 
-# Load Data with caching (VERY IMPORTANT)
-@st.cache_data
-def load_data(symbol):
-    try:
-        data = yf.Ticker(symbol).history(period="3y")
-        return data
-    except:
-        return pd.DataFrame()
+2. Run the app:
+   streamlit run app.py
 
-# Button to avoid auto-loading issues
-if st.button("Load Data"):
+## Features
+- Stock price prediction
+- Data visualization
+- Real-time stock data
 
-    with st.spinner("Fetching stock data... ⏳"):
-        data = load_data(stock)
-
-    # Check data
-    if data is None or data.empty:
-        st.error("❌ Failed to fetch data. Try another stock (AAPL, TSLA, INFY.NS)")
-    else:
-        st.success("✅ Data Loaded Successfully")
-
-        # Show data
-        st.subheader("📊 Recent Data")
-        st.dataframe(data.tail())
-
-        # Chart
-        st.subheader("📈 Closing Price Chart")
-        st.line_chart(data["Close"])
-
-        # ML Model
-        data = data[['Close']].copy()
-        data['Prediction'] = data['Close'].shift(-10)
-
-        data.dropna(inplace=True)
-
-        X = np.array(data[['Close']])
-        y = np.array(data['Prediction'])
-
-        model = LinearRegression()
-        model.fit(X, y)
-
-        # Predict next 10 days
-        future = np.array(data[['Close']].tail(10))
-        predictions = model.predict(future)
-
-        st.subheader("🔮 Next 10 Days Prediction")
-        st.write(predictions)
+## Author
+Your Name
