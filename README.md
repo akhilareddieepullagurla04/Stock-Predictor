@@ -24,4 +24,4 @@ This project predicts stock prices using Machine Learning.
 - Real-time stock data
 
 ## Author
-Your Name
+Akhila Pullagurla
